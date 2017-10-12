@@ -138,7 +138,6 @@
     <EmbeddedResource Include="SelectFriend.resx">
       <DependentUpon>SelectFriend.cs</DependentUpon>
     </EmbeddedResource>
-    <Fakes Include="Fakes\CSkin.fakes" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -148,7 +147,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="WeiChat_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

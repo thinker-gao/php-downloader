@@ -72,12 +72,7 @@ namespace WeiChat
 
         }
 
-        private void 关于软件ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBoxEx.Show("特别鸣谢:HttpHelper,newtonsoft,skin作者", "关于软件", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            MessageBoxEx.Show("欢迎使用微信群发工具", "免费版", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            MessageBoxEx.Show("信息");
-        }
+
 
 
 
