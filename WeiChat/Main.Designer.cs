@@ -68,7 +68,6 @@
             this.FriendList.SubItemMenu = null;
             this.FriendList.TabIndex = 148;
             this.FriendList.VipFontColor = System.Drawing.Color.Empty;
-            this.FriendList.Click += new System.EventHandler(this.FriendList_Click);
             // 
             // pnlImgTx
             // 

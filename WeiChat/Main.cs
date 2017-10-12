@@ -65,18 +65,7 @@ namespace WeiChat
    
             }
         }
-  
-
-        private void FriendList_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-
-
-
+ 
 
         private void btnSend_Click(object sender, EventArgs e)
         {
