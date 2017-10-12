@@ -29,20 +29,15 @@ namespace WeiChat
         public  static string Friendlist;//好友列表Html
         public static string  TextMessage;//消息文本内容
 
-        //获取uuid的接口地址,需要增加时间戳
-        private static string GetUuidUrl = "https://login.wx.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https%3A%2F%2Fwx.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=zh_CN&_=";
-        //根据uuid生成二维码接口,需要增加uuid
-        private static string GetQrcodeUrl = "https://login.weixin.qq.com/qrcode/";
-        //检测是否二维码是否扫描的接口
-        private static string CheckQrcodeUrl = "https://login.wx.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid=";
-        //获取skey，wxsid，pass_ticket的接口
-        private static string GetUserinfoUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxnewloginpage?lang=zh_CN&ticket=";
-        //微信初始化init接口
+
+        private static string GetUuidUrl = "https://login.wx.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https%3A%2F%2Fwx.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=zh_CN&_=";//生成UUid Api
+        private static string GetQrcodeUrl = "https://login.weixin.qq.com/qrcode/";//生成二维码的Api
+        private static string CheckQrcodeUrl = "https://login.wx.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid=";//检测二维码扫描结果Api
+        private static string GetUserinfoUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxnewloginpage?lang=zh_CN&ticket=";//微信initApi
         private static string initUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxinit?";
-        //好友列表加载接口
-        private static string ContactUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact?lang=zh_CN";
-        //微信发送消息接口
-        private static string SendMessageUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?lang=zh_CN&pass_ticket=";
+        private static string ContactUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact?lang=zh_CN";//好友列表Api
+        private static string SendMessageUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?lang=zh_CN&pass_ticket=";//发送消息Api
+        private static string UploadFileUrl = "https://file.wx.qq.com/cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json";//文件上传Api
 
 
         //(1)生成微信需要的UUid.
@@ -244,7 +239,17 @@ namespace WeiChat
             return true;
         }
 
-        //byteArray转图片处理
+        //9.微信上传文件的处理
+        public static string UploadFile()
+        {
+
+
+
+            return "1122";
+        }
+
+
+        //A.byteArray转图片处理
         private static Image byteArrayToImage(byte[] Bytes)
         {
             using (MemoryStream ms = new MemoryStream(Bytes)) {
@@ -254,7 +259,7 @@ namespace WeiChat
         }
 
 
-        //返回时间戳,1毫秒级,2秒级
+        //B.返回时间戳,1毫秒级,2秒级
         public static string GetTime(int type)
         {
             string Time = null;
@@ -273,7 +278,7 @@ namespace WeiChat
             return Time;
         }
 
-        //返回微信需要的DeviceID
+        //B.返回微信需要的DeviceID
         public static string DeviceID()
         {
             Random ran = new Random();
@@ -285,7 +290,7 @@ namespace WeiChat
             return DeviceID;
         }
 
-        //返回微信需要的LocalID/ClientMsgId
+        //C.返回微信需要的LocalID/ClientMsgId
         public static string LocalID()
         {
             Random ran = new Random();
