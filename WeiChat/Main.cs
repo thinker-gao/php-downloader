@@ -46,6 +46,7 @@ namespace WeiChat
             chatListItem1.Tag = null;
             chatListItem1.Text = "好友列表";
             chatListItem1.TwinkleSubItemNumber = 0;
+            int runnum = 0;
             //填充好友列表
             foreach (var rows in Friendlist.MemberList)
             {
@@ -53,15 +54,18 @@ namespace WeiChat
                 chatListSubItemNum.Bounds = new System.Drawing.Rectangle(0, 27, 202, 27);
                 chatListSubItemNum.DisplayName = rows.RemarkName;
                 chatListSubItemNum.HeadRect = new System.Drawing.Rectangle(5, 30, 20, 20);
-               //chatListSubItemNum.HeadImage = WeichatTool.CreateHttpimg("https://wx.qq.com" + rows.HeadImgUrl);
+                chatListSubItemNum.HeadImage = WeichatTool.CreateHttpimg("https://wx.qq.com" + rows.HeadImgUrl);
                 chatListSubItemNum.ID = ((uint)(0u));
                 chatListSubItemNum.NicName = rows.NickName;
                 chatListSubItemNum.OwnerListItem = chatListItem1;
                 chatListSubItemNum.PersonalMsg =rows.Signature; ;
                 chatListItem1.SubItems.AddRange(new CCWin.SkinControl.ChatListSubItem[] {
                 chatListSubItemNum});
-                this.FriendList.Items.AddRange(new CCWin.SkinControl.ChatListItem[] {
-            chatListItem1});
+                this.FriendList.Items.AddRange(new CCWin.SkinControl.ChatListItem[] { chatListItem1});
+                runnum++;
+                if (runnum % 5 == 0) {
+                    Thread.Sleep(5000);
+                }
    
             }
         }

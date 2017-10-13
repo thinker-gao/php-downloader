@@ -113,7 +113,6 @@ namespace WeiChat
             HttpResult result = http.GetHtml(item);
             string html = result.Html.Trim();
             System.IO.File.WriteAllText(@"D:\1.txt", HttpCookie);
-            System.IO.File.WriteAllText(@"D:\2.txt", result.Cookie);
             HttpCookie = HttpCookieHelper.GetSmallCookie(result.Cookie);//updateCookie(HttpCookieHelper.GetSmallCookie(HttpCookie), HttpCookieHelper.GetSmallCookie(result.Cookie));
             
             int startcharnum = html.IndexOf("wxsid");
@@ -207,8 +206,6 @@ namespace WeiChat
                 ResultType = ResultType.Byte
             };
             HttpResult result = http.GetHtml(item);
-            string statusCodeDescription = result.StatusDescription;
-
             return byteArrayToImage(result.ResultByte);
         }
 
@@ -240,22 +237,36 @@ namespace WeiChat
         }
 
         //9.微信上传文件的处理
-        public static string UploadFile()
+        public static string UploadFile(string FileAddress)
         {
-
-
-
-            return "1122";
+            //要Post的数据
+            string postfile = FileAddress;
+            HttpHelper http = new HttpHelper();
+            HttpItem item = new HttpItem()
+            {
+                URL = "http://www.sufeinet.com",//URL     必需项    
+                Method = "post",//URL     可选项 默认为Get   
+                ContentType = "application/x-www-form-urlencoded",//返回类型    可选项有默认值
+                PostDataType = PostDataType.FilePath,
+                Postdata = postfile
+            };
+            //请求的返回值对象
+            HttpResult result = http.GetHtml(item);
+            //获取请请求的Html
+            string html = result.Html;
+            //获取请求的Cookie
+            string cookie = result.Cookie;
+            System.IO.File.WriteAllText(@"D:\html.txt",html);
+            return html;
         }
 
 
         //A.byteArray转图片处理
         private static Image byteArrayToImage(byte[] Bytes)
         {
-            using (MemoryStream ms = new MemoryStream(Bytes)) {
-                Image outputImg = Image.FromStream(ms);
-                return outputImg;
-            }
+            MemoryStream ms = new MemoryStream(Bytes);
+            Image outputImg = Image.FromStream(ms);
+            return outputImg;
         }
 
 
