@@ -33,7 +33,7 @@ namespace WeiChat
         private static string GetUuidUrl = "https://login.wx.qq.com/jslogin?appid=wx782c26e4c19acffb&redirect_uri=https%3A%2F%2Fwx.qq.com%2Fcgi-bin%2Fmmwebwx-bin%2Fwebwxnewloginpage&fun=new&lang=zh_CN&_=";//生成UUid Api
         private static string GetQrcodeUrl = "https://login.weixin.qq.com/qrcode/";//生成二维码的Api
         private static string CheckQrcodeUrl = "https://login.wx.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid=";//检测二维码扫描结果Api
-        private static string GetUserinfoUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxnewloginpage?lang=zh_CN&ticket=";//微信initApi
+        private static string GetUserinfoUrl = "";//获取用户信息
         private static string initUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxinit?";
         private static string ContactUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact?lang=zh_CN";//好友列表Api
         private static string SendMessageUrl = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?lang=zh_CN&pass_ticket=";//发送消息Api
@@ -78,20 +78,26 @@ namespace WeiChat
         public static bool Getticket()
         {
             Random ran = new Random();
-            CheckQrcodeUrl += uuid + "&tip=1&r=" + ran.Next(1000000, 9999999) + "&_=" + GetTime(2);
+            string  checkurl= CheckQrcodeUrl+ uuid + "&tip=1&r=-" + (Convert.ToInt32(GetTime(2))- 15216120).ToString() + "&_=" + GetTime(1);
+
             HttpHelper http = new HttpHelper();
             HttpItem item = new HttpItem()
             {
-                URL = CheckQrcodeUrl,
+                URL = checkurl,
                 Cookie = HttpCookie,
             };
             HttpResult result = http.GetHtml(item);
             string html = result.Html.Trim();
+
             int startcharnum = html.IndexOf("ticket");
             if (startcharnum > 0)
             {
+                
                 Match Ticket = Regex.Match(html, "ticket=([^<]*)@qrticket", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                Match redirect_uri = Regex.Match(html, "redirect_uri=\"([^<]*)\";", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 ticket = Ticket.Groups[1].Value;
+                GetUserinfoUrl= redirect_uri.Groups[1].Value;
+                //System.IO.File.WriteAllText(@"D:\login.txt", GetUserinfoUrl);
                 return true;
             }
             else
@@ -103,7 +109,7 @@ namespace WeiChat
         //(4)通过3中的ticket获取skey,wxsid,wxuin,pass_ticket
         public static bool GetUserinfo()
         {
-            GetUserinfoUrl += ticket + "@qrticket_0&uuid=" + uuid + "&lang=zh_CN&scan=" + GetTime(2) + "&fun=new&version=v";
+
             HttpHelper http = new HttpHelper();
             HttpItem item = new HttpItem()
             {
@@ -112,12 +118,13 @@ namespace WeiChat
             };
             HttpResult result = http.GetHtml(item);
             string html = result.Html.Trim();
-            System.IO.File.WriteAllText(@"D:\1.txt", HttpCookie);
+
             HttpCookie = HttpCookieHelper.GetSmallCookie(result.Cookie);//updateCookie(HttpCookieHelper.GetSmallCookie(HttpCookie), HttpCookieHelper.GetSmallCookie(result.Cookie));
             
             int startcharnum = html.IndexOf("wxsid");
             if (startcharnum > 0)
             {
+                //System.IO.File.WriteAllText(@"D:\login2.txt", html);
                 string[] pattern = { "<skey>([^<]*)</skey>", "<wxsid>([^<]*)</wxsid>", "<wxuin>([^<]*)</wxuin>", "<pass_ticket>([^<]*)</pass_ticket>" };
                 for (int i = 0; i < pattern.Length; i++)
                 {
@@ -153,14 +160,14 @@ namespace WeiChat
         public static bool InitWeicaht()
         {
 
-            initUrl += "r=" + GetTime(2) + "&lang=zh_CN&pass_ticket=" + passticket;
+            string initurl= initUrl + "r=" + GetTime(2) + "&lang=zh_CN&pass_ticket=" + passticket;
             HttpHelper http = new HttpHelper();
             Deviceid = DeviceID();
             var data = new { BaseRequest=new { Uin = wxuin, Sid = wxsid, Skey = skey, DeviceID = Deviceid } };
             string json = JsonConvert.SerializeObject(data);
             HttpItem item = new HttpItem()
             {
-                URL = initUrl,
+                URL = initurl,
                 Method = "post",
                 Accept = "application/json, text/plain, */*",
                 Postdata = json,
@@ -179,11 +186,11 @@ namespace WeiChat
         public static string Memberlist()
         {
            
-            ContactUrl +="&pass_ticket=" +passticket+ "&r=" + GetTime(1)+ "&seq=0&skey=" + skey;
+            string contacturl =ContactUrl +"&pass_ticket=" +passticket+ "&r=" + GetTime(1)+ "&seq=0&skey=" + skey;
             HttpHelper http = new HttpHelper();
             HttpItem item = new HttpItem()
             {
-                URL = ContactUrl,
+                URL = contacturl,
                 Method = "get",
                 Encoding = Encoding.UTF8,
                 Cookie = HttpCookie,
@@ -212,7 +219,7 @@ namespace WeiChat
         //8.微信发送文本消息.
         public static bool SendTextMessage(string Content,string ToUserName)
         {
-            SendMessageUrl +=passticket+ "&lang=zh_CN";
+            string sendmessageurl =SendMessageUrl + passticket+ "&lang=zh_CN";
             HttpHelper http = new HttpHelper();
             Deviceid = DeviceID();
             string LocalId = LocalID();
@@ -220,7 +227,7 @@ namespace WeiChat
             string json = JsonConvert.SerializeObject(data);
             HttpItem item = new HttpItem()
             {
-                URL = SendMessageUrl,
+                URL = sendmessageurl,
                 PostEncoding=Encoding.UTF8,
                 Encoding=Encoding.UTF8,
                 Accept = "application/json, text/plain, */*",
@@ -256,7 +263,7 @@ namespace WeiChat
             string html = result.Html;
             //获取请求的Cookie
             string cookie = result.Cookie;
-            System.IO.File.WriteAllText(@"D:\html.txt",html);
+            //System.IO.File.WriteAllText(@"D:\html.txt",html);
             return html;
         }
 
