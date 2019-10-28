@@ -18,7 +18,7 @@ class download
      * 分片下载大小
      * @var int
      */
-    private $burstBytes = 2048;
+    private $burstBytes = 1024;
 
     /**
      * 设置远程下载文件的路径
@@ -271,8 +271,8 @@ class download
 //设置下载文件的url
 $url = 'https://www.gaojiufeng.cn/demo/1.tar.gz';
 
-//设置分段下载的字节大小
-$burst = 4048;
+//设置分段下载的字节大小(1M)
+$burst = 1048576;
 
 //设置保存到服务器本地的文件名
 $filename = '11.tar.gz';
