@@ -1,4 +1,7 @@
-### PHP-Downloader
+# PHP-Downloader
+PHP下载器,PHP断点下载,PHP下载远程文件,支持断点下载。
+
+# PHP-Downloader
 
 - 支持服务器端断点下载超大文件,支持cli和fpm
 - 下载速度慢可以调整分片大小,常用大小1048576（即可1M）
