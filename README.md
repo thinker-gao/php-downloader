@@ -1,6 +1,17 @@
 # PHP-Downloader
 PHP下载器,PHP断点下载,PHP下载远程文件,支持断点下载。
 
+<table border="1">
+    <tr>
+        <td>row 1, cell 1</td>
+        <td>row 1, cell 2</td>
+    </tr>
+    <tr>
+        <td>row 2, cell 1</td>
+        <td>row 2, cell 2</td>
+    </tr>
+</table>
+
 支持的运行方式:fpm/cgi
 
 是否支持多线程:不支持,可以自己扩展,将每个分片范围通过curl批量请求实现
